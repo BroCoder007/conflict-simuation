@@ -2,6 +2,8 @@
 
 A map-based conflict observatory and reproducible country-resource scenario simulator. **Java 21 / Spring Boot** owns the simulation, validation, data refresh and persistence. **Svelte 5 / TypeScript / MapLibre** provide the interface. One executable JAR serves the complete application.
 
+The [GitHub Pages edition](https://brocoder007.github.io/conflict-simuation/) provides the map, country profiles and dated snapshots. The Java application is needed for simulations, saved runs and automatic updates.
+
 ![Conflict Atlas overview](docs/overview.png)
 
 ## What you can do

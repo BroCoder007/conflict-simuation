@@ -116,8 +116,8 @@
     (async () => {
       try {
         const [w, l] = await Promise.all([
-          fetch('/data/world.geojson').then((r) => r.json()),
-          fetch('/data/landforms.geojson').then((r) => r.json())
+          fetch(import.meta.env.BASE_URL + 'data/world.geojson').then((r) => r.json()),
+          fetch(import.meta.env.BASE_URL + 'data/landforms.geojson').then((r) => r.json())
         ]);
         if (disposed) return;
         world = w;
