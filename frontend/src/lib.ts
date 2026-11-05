@@ -73,6 +73,17 @@ export const outcomeColors: Record<keyof Outcomes, string> = {
   deescalation: '#b7d679'
 };
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
+  if (import.meta.env.VITE_PAGES === 'true') {
+    const base = import.meta.env.BASE_URL + 'data/snapshot/';
+    const read = async (name: string) => { const r = await fetch(base + name + '.json'); if (!r.ok) throw new Error('Snapshot unavailable'); return r.json(); };
+    if (path === '/catalog') { const [countries, resources, manifest] = await Promise.all([read('countries'), read('metrics'), read('manifest')]); return { countries, resources, manifest } as T; }
+    if (path === '/history') return await read('history') as T;
+    if (path === '/candidate') return await read('candidate') as T;
+    if (path === '/news') { const n = await read('news'); return { ...n, stale: true, lastError: 'This Pages edition shows a dated reporting snapshot.' } as T; }
+    if (path === '/sources') { const [manifest, resources, news] = await Promise.all([read('manifest'), read('metrics'), read('news')]); return { enabled: false, refreshing: false, lastAttempt: '', resourcesFetchedAt: resources.fetchedAt, resourceError: '', newsError: '', newsFetchedAt: news.fetchedAt, conflict: manifest } as T; }
+    if (path === '/runs') return [] as T;
+    throw new Error('The Java application is required for simulations and saved scenarios.');
+  }
   const res = await fetch('/api' + path, {
     ...init,
     headers: { 'Content-Type': 'application/json', ...init?.headers }

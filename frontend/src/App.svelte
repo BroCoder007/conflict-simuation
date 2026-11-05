@@ -35,6 +35,7 @@
     { id: 'library', label: 'Saved scenarios', icon: Layers },
     { id: 'method', label: 'Data & methodology', icon: BookOpen }
   ] as const;
+  const pagesEdition = import.meta.env.VITE_PAGES === 'true';
   let view = $state<View>('overview');
   let catalog = $state<Catalog | null>(null);
   let history = $state<HistoryRow[]>([]);
@@ -64,6 +65,7 @@
     navigate('countries');
   }
   function chooseLab(id = '') {
+    if (pagesEdition) { notice = 'The simulation and saved scenarios require the Java app. Get it from the project repository.'; window.scrollTo({top: 0}); return; }
     startCountry = id;
     activeRun = null;
     navigate('lab');
@@ -143,7 +145,7 @@
     media.addEventListener('change', updateNavigation);
     const readHash = () => {
       const next = location.hash.slice(1);
-      if (navigation.some((n) => n.id === next)) view = next as View;
+      if (navigation.some((n) => n.id === next) && !(pagesEdition && ['lab','library'].includes(next))) view = next as View;
     };
     readHash();
     window.addEventListener('hashchange', readHash);
@@ -158,7 +160,7 @@
     } catch {}
     load();
     const timer = setInterval(async () => {
-      if (document.hidden || !catalog) return;
+      if (pagesEdition || document.hidden || !catalog) return;
       try {
         const [s, n] = await Promise.all([
           api<SourceStatus>('/sources'),
@@ -198,7 +200,7 @@
     >
     <p class="sidebar-label">OBSERVE. COMPARE. UNDERSTAND.</p>
     <nav aria-label="Main navigation">
-      {#each navigation as nav}<button
+      {#each navigation.filter(n => !pagesEdition || !['lab','library'].includes(n.id)) as nav}<button
           class:current={view === nav.id}
           onclick={() => {
             if (nav.id === 'lab') {
@@ -240,7 +242,7 @@
           class="refresh-button"
           aria-label="Refresh sources"
           onclick={refreshSources}
-          disabled={refreshing || sources?.refreshing}
+          disabled={pagesEdition || refreshing || sources?.refreshing}
           ><RefreshCw
             size={14}
             class={refreshing || sources?.refreshing ? 'spinning' : ''}
@@ -253,6 +255,7 @@
       </div>
     </header>
     <main id="main">
+      {#if pagesEdition}<div class="notice">GitHub Pages edition: explore the dated map and country data. The Java simulation, saved scenarios and automatic source updates require the <a href="https://github.com/BroCoder007/conflict-simuation#run-from-source">full application</a>.</div>{/if}
       {#if notice}<div class="notice top-notice" role="status">
           <span>{notice}</span><button
             aria-label="Dismiss message"

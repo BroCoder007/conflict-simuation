@@ -4,6 +4,7 @@ work/
 **/dist/
 /data/
 /backend/data/
+/frontend/public/data/snapshot/
 .env
 .env.*
 !.env.example
