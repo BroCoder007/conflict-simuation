@@ -1,0 +1,15 @@
+work/
+**/target/
+**/node_modules/
+**/dist/
+/data/
+/backend/data/
+.env
+.env.*
+!.env.example
+*.log
+*.mv.db
+*.trace.db
+.DS_Store
+.idea/
+.vscode/
