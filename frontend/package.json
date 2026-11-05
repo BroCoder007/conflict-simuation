@@ -1,0 +1,34 @@
+{
+  "name": "conflict-atlas-ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "preview": "vite preview --host 127.0.0.1",
+    "format": "prettier --write \"src/**/*.{svelte,ts,css}\" index.html vite.config.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.0.0",
+    "@fontsource/ibm-plex-mono": "^5.0.0",
+    "@lucide/svelte": "^1.69.0",
+    "d3-geo": "^3.1.2",
+    "maplibre-gl": "^6.16.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@types/d3-geo": "^3.1.1",
+    "@types/geojson": "^7946.0.16",
+    "prettier": "^3.9.10",
+    "prettier-plugin-svelte": "^4.1.1",
+    "svelte": "^5.57.1",
+    "svelte-check": "^4.0.0",
+    "typescript": "^6.0.0",
+    "vite": "^8.0.12"
+  }
+}
